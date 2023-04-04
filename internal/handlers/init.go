@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jmoiron/sqlx"
 )
 
 type InitServer interface {
@@ -33,7 +34,7 @@ type Server struct {
 	ProductionMode bool
 }
 
-func (s *Server) InitServer() error {
+func (s *Server) InitServer(db *sqlx.DB) error {
 	s.Router.SetFuncMap(template.FuncMap{
 		"upper": strings.ToUpper,
 	})
@@ -47,6 +48,7 @@ func (s *Server) InitServer() error {
 	s.Router.Use(gin.Recovery())
 
 	s.routesInit()
+	s.routesInitAPI(db)
 
 	if err := s.Router.Run(":5050"); err != nil {
 		return err

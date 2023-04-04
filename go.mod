@@ -2,6 +2,8 @@ module courses
 
 go 1.19
 
+require github.com/lib/pq v1.10.7
+
 require (
 	github.com/0xAX/notificator v0.0.0-20220220101646-ee9b8921e557 // indirect
 	github.com/bytedance/sonic v1.8.6 // indirect

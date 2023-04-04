@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <h1>Главная</h1>
+    <h1>Добро пожаловать!</h1>
+
+    <p>Здесь только лучшие курсы</p>
   </div>
 </template>
 

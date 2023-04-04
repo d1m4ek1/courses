@@ -45,3 +45,11 @@ func (s *Server) addOrder() gin.HandlerFunc {
 		})
 	})
 }
+
+func (s *Server) previewCourse() gin.HandlerFunc {
+	return gin.HandlerFunc(func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "Курс",
+		})
+	})
+}

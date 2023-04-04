@@ -11,6 +11,8 @@ func (s *Server) routesInit() {
 		courses.GET("", s.courses())
 
 		courses.GET("/add", s.addOrder())
+
+		courses.GET("/:id", s.previewCourse())
 	}
 
 	order := s.Router.Group("/orders")
