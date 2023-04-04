@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { DOMToCurrency } from "@/assets/utils";
 import User from "../models/user";
 export default {
   name: "CourseVue",
@@ -29,6 +30,7 @@ export default {
       .then((data) => (ref.courseData = { ...data.data }));
 
     window.document.title = this.courseData.title;
+    DOMToCurrency();
   },
 };
 </script>

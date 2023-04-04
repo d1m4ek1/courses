@@ -15,7 +15,11 @@ func (s *Server) routesInitAPI(db *sqlx.DB) {
 
 			course.GET("/all", api.GetCourseAllController(db))
 
-			course.GET("/byid", api.GetCourseByIDController(db))
+			course.PUT("/edit", api.EditCourseController(db))
+
+			course.GET("/get", api.GetCourseByIDController(db))
+
+			course.DELETE("/delete", api.DeleteCourseController(db))
 		}
 	}
 }

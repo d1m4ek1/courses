@@ -38,10 +38,18 @@ func (s *Server) cart() gin.HandlerFunc {
 	})
 }
 
-func (s *Server) addOrder() gin.HandlerFunc {
+func (s *Server) addCourse() gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "index.html", gin.H{
-			"title": "Корзина",
+			"title": "Добавить курс",
+		})
+	})
+}
+
+func (s *Server) editCourse() gin.HandlerFunc {
+	return gin.HandlerFunc(func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "Редактировать курс",
 		})
 	})
 }

@@ -10,7 +10,9 @@ func (s *Server) routesInit() {
 	{
 		courses.GET("", s.courses())
 
-		courses.GET("/add", s.addOrder())
+		courses.GET("/add", s.addCourse())
+
+		courses.GET("/:id/edit", s.editCourse())
 
 		courses.GET("/:id", s.previewCourse())
 	}

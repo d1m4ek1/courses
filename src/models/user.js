@@ -16,8 +16,21 @@ class User {
   }
 
   static async getCourseById(id) {
-    return await fetch(`/api/course/byid?id=${id}`, {
+    return await fetch(`/api/course/get?id=${id}`, {
       method: "GET",
+    });
+  }
+
+  static async editCourse(id, data) {
+    return await fetch(`/api/course/edit?id=${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
+  static async deleteCourse(id) {
+    return await fetch(`/api/course/delete?id=${id}`, {
+      method: "DELETE",
     });
   }
 }
