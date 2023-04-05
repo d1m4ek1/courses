@@ -11,6 +11,34 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+func BuyCourseController(db *sqlx.DB) gin.HandlerFunc {
+	return gin.HandlerFunc(func(ctx *gin.Context) {
+		var data models.ProductData
+
+		if err := json.NewDecoder(ctx.Request.Body).Decode(&data); err != nil {
+			fmt.Println(err.Error())
+			ctx.JSON(http.StatusUnprocessableEntity, gin.H{
+				"successfully": false,
+				"error":        err.Error(),
+			})
+			return
+		}
+
+		if status, err := data.AddToCart(db); err != nil {
+			fmt.Println(err.Error())
+			ctx.JSON(status, gin.H{
+				"successfully": false,
+				"error":        err.Error(),
+			})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"successfully": true,
+		})
+	})
+}
+
 func AddCourseController(db *sqlx.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
 		var data models.CourseData

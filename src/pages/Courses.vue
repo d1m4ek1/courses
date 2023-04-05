@@ -13,7 +13,8 @@
             <span class="card-title">{{ course.title }}</span>
           </div>
           <div class="card-content">
-            <p class="price">{{ course.price }}</p>
+            <Priceui :price="course.price" />
+            <p>Создан <Dateui :date="course.addDate" /></p>
           </div>
           <div class="card-action actions">
             <router-link :to="`/courses/${course.id}`" target="_blank"
@@ -22,7 +23,9 @@
             <router-link :to="`/courses/${course.id}/edit`"
               >Редактировать</router-link
             >
-            <button type="submit" class="btn btn-primary">Купить</button>
+            <button @click="addToCart(course.id)" class="btn btn-primary">
+              Купить
+            </button>
           </div>
         </div>
       </div>
@@ -31,8 +34,10 @@
 </template>
 
 <script>
-import { DOMToCurrency } from "@/assets/utils";
 import User from "../models/user";
+import Auth from "@/models/auth";
+import Priceui from "@/components/Price.vue";
+import Dateui from "@/components/Date.vue";
 
 export default {
   name: "CoursesVue",
@@ -41,13 +46,29 @@ export default {
       courses: [],
     };
   },
+  methods: {
+    async addToCart(courseId) {
+      const data = {
+        courseId,
+        userId: Auth.getPersonID,
+      };
+
+      await User.AddCourseToCart(data)
+        .then((response) => response.json())
+        .then((response) => {
+          if (response.successfully) this.$router.push("/cart");
+        });
+    },
+  },
   async created() {
     const ref = this;
     await User.getCourses()
       .then((response) => response.json())
       .then((data) => (ref.courses = data.data));
-
-    DOMToCurrency();
+  },
+  components: {
+    Priceui,
+    Dateui,
   },
 };
 </script>

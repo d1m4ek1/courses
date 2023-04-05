@@ -66,7 +66,7 @@
       class="loader"
     ></span>
     <h5 v-if="indicators.isEditedData === -1 && indicators.successfully">
-      Данные редактированны
+      Курс добавлен
     </h5>
     <h5 v-if="indicators.isEditedData === -1 && !indicators.successfully">
       Неизвестная ошибка

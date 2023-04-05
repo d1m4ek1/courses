@@ -1,5 +1,11 @@
+import Auth from "./auth";
+
 class User {
   static async addCourse(data) {
+    const personId = Auth.setNewPersonID();
+    data.userId = personId;
+    data.addDate = Date();
+
     return await fetch("/api/course/add", {
       method: "POST",
       body: JSON.stringify(data),
@@ -31,6 +37,13 @@ class User {
   static async deleteCourse(id) {
     return await fetch(`/api/course/delete?id=${id}`, {
       method: "DELETE",
+    });
+  }
+
+  static async AddCourseToCart(data) {
+    return await fetch(`/api/course/buy`, {
+      method: "POST",
+      body: JSON.stringify(data),
     });
   }
 }

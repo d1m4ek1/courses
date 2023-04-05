@@ -27,7 +27,12 @@
             <a :href="href" @click="navigate">Корзина</a>
           </li>
         </router-link>
-        <router-link to="/orders" v-slot="{ href, navigate, isActive }" custom>
+        <router-link
+          v-if="showOrderLink()"
+          to="/orders"
+          v-slot="{ href, navigate, isActive }"
+          custom
+        >
           <li :class="[isActive && 'active']">
             <a :href="href" @click="navigate">Заказы</a>
           </li>
@@ -38,7 +43,14 @@
 </template>
 
 <script>
+import Auth from "@/models/auth";
+
 export default {
   name: "NavBar",
+  methods: {
+    showOrderLink() {
+      return Auth.getAnswerAllow;
+    },
+  },
 };
 </script>

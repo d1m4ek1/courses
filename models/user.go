@@ -8,27 +8,31 @@ import (
 
 type User interface {
 	AddCourse(db *sqlx.DB) (int, error)
+	GetByIDCourse(db *sqlx.DB) (int, error)
+	EditCourse(db *sqlx.DB) (int, error)
 }
 
 type CourseData struct {
-	Id     int64  `json:"id" db:"id"`
-	Title  string `json:"title" db:"title"`
-	Price  int    `json:"price" db:"price"`
-	Banner string `json:"banner" db:"banner"`
+	Id      int64  `json:"id" db:"id"`
+	Title   string `json:"title" db:"title"`
+	Price   int    `json:"price" db:"price"`
+	Banner  string `json:"banner" db:"banner"`
+	UserID  string `json:"userId" db:"user_id"`
+	AddDate string `json:"addDate" db:"add_date"`
 }
 
 func (c *CourseData) AddCourse(db *sqlx.DB) (int, error) {
 	stmt, err := db.Prepare(`
 	INSERT INTO
 		courses
-		(title, price, banner)
+		(title, price, banner, user_id, add_date)
 	VALUES
-		($1, $2, $3)`)
+		($1, $2, $3, $4, $5)`)
 	if err != nil {
 		return http.StatusInternalServerError, err
 	}
 
-	if _, err := stmt.Exec(c.Title, c.Price, c.Banner); err != nil {
+	if _, err := stmt.Exec(c.Title, c.Price, c.Banner, c.UserID, c.AddDate); err != nil {
 		return http.StatusInternalServerError, err
 	}
 

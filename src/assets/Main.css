@@ -1,7 +1,8 @@
 @import url(./Loader.css);
 
-body {
-  background-color: rgb(92, 92, 92);
+.card-image {
+  overflow: hidden;
+  height: 200px;
 }
 
 .nav-wrapper {
@@ -9,7 +10,7 @@ body {
 }
 
 .price {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .course {

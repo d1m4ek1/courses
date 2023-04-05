@@ -4,13 +4,14 @@
       <img :src="courseData.banner" :alt="courseData.title" />
       <h1>{{ courseData.title }}</h1>
     </div>
-    <p class="price">{{ courseData.price }}</p>
+    <Priceui :price="courseData.price" />
   </div>
 </template>
 
 <script>
-import { DOMToCurrency } from "@/assets/utils";
 import User from "../models/user";
+import Priceui from "@/components/Price.vue";
+
 export default {
   name: "CourseVue",
   data() {
@@ -30,7 +31,9 @@ export default {
       .then((data) => (ref.courseData = { ...data.data }));
 
     window.document.title = this.courseData.title;
-    DOMToCurrency();
+  },
+  components: {
+    Priceui,
   },
 };
 </script>
