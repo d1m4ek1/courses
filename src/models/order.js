@@ -1,17 +1,21 @@
-import Auth from "./auth";
-
 class Order {
   static async AddToOrder(xcsrf) {
-    return await fetch(`/api/order/add?userId=${Auth.getPersonID}`, {
+    const data = {
+      addDateOrder: new Date(),
+    };
+
+    return await fetch(`/api/order/add`, {
       method: "POST",
+      body: JSON.stringify(data),
       headers: {
         "X-CSRF-TOKEN": xcsrf,
+        "Content-Type": "application/json",
       },
     });
   }
 
   static async GetOrders() {
-    return await fetch(`/api/order/all?userId=${Auth.getPersonID}`, {
+    return await fetch(`/api/order/all`, {
       method: "GET",
     });
   }

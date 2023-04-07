@@ -12,7 +12,9 @@ import (
 
 func GetAllProductsController(db *sqlx.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
-		data := models.ProductData{UserID: ctx.Query("userId")}
+		var data models.ProductData
+
+		data.Token, _ = ctx.Cookie("user_token")
 
 		response, status, err := data.GetAllProducts(db)
 		if err != nil {

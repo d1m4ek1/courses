@@ -17,7 +17,7 @@ export default {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
-      }).format(new Date(this.date));
+      }).format(this.date === "" ? "" : new Date(this.date));
     },
   },
 };

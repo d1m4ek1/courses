@@ -25,7 +25,10 @@ class User {
   }
 
   static async editCourse(xcsrf, id, data) {
-    return await fetch(`/api/course/edit?id=${id}`, {
+    data.editDate = Date();
+    data.id = +id;
+
+    return await fetch(`/api/course/edit`, {
       method: "PUT",
       body: JSON.stringify(data),
       headers: {

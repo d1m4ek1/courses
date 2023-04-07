@@ -57,7 +57,7 @@ func LoginToAccount(db *sqlx.DB) gin.HandlerFunc {
 			fmt.Println(err.Error())
 			ctx.JSON(http.StatusInternalServerError, gin.H{
 				"successfully": false,
-				"error":        err.Error(),
+				"error":        "Данные переданы не корректно",
 			})
 			return
 		}
@@ -67,7 +67,7 @@ func LoginToAccount(db *sqlx.DB) gin.HandlerFunc {
 			fmt.Println(err.Error())
 			ctx.JSON(status, gin.H{
 				"successfully": false,
-				"error":        err.Error(),
+				"error":        "Неизвестная ошибка",
 				"isLogin":      isLogin,
 			})
 			return

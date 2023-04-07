@@ -17,22 +17,31 @@ type Cart interface {
 }
 
 type ProductData struct {
-	Id       int64  `db:"id"`
-	CourseID int    `json:"courseId" db:"course_id"`
-	Count    int    `db:"count"`
-	UserID   string `json:"userId" db:"user_id"`
+	Id       int64  `json:"-" db:"id"`
+	CourseID int64  `json:"courseId" db:"course_id"`
+	Count    int    `json:"count" db:"count"`
+	UserID   string `json:"-" db:"user_id"`
+	Token    string `json:"-" db:"user_id"`
 }
 
 type ProductItem struct {
-	Id       int    `json:"id" db:"id"`
-	Title    string `json:"title" db:"title"`
-	Price    int    `json:"price" db:"price"`
-	Count    int    `json:"count" db:"count"`
-	CourseID int    `json:"courseId" db:"course_id"`
+	Id         int    `json:"id" db:"id"`
+	Title      string `json:"title" db:"title"`
+	Price      int    `json:"price" db:"price"`
+	Count      int    `json:"count" db:"count"`
+	CourseID   int    `json:"courseId" db:"course_id"`
+	FirstName  string `json:"firstName" db:"first_name"`
+	SecondName string `json:"secondName" db:"second_name"`
+	ThirdName  string `json:"thirdName" db:"third_name"`
 }
 
 func (p *ProductData) AddToCart(db *sqlx.DB) (int, error) {
 	var isHasCourseInCart bool
+
+	if err := db.Get(&p.UserID, `SELECT user_id FROM users WHERE token=$1`, p.Token); err != nil {
+		return http.StatusInternalServerError, err
+	}
+
 	if err := db.Get(&isHasCourseInCart, `
 	SELECT EXISTS
 		(
@@ -76,6 +85,11 @@ func (p *ProductData) AddToCart(db *sqlx.DB) (int, error) {
 
 func (p *ProductData) GetAllProducts(db *sqlx.DB) ([]ProductItem, int, error) {
 	var res []ProductItem
+
+	if err := db.Get(&p.UserID, `SELECT user_id FROM users WHERE token != '' AND token=$1`, p.Token); err != nil {
+		return nil, http.StatusInternalServerError, err
+	}
+
 	stmt, err := db.Preparex(`
 	SELECT
 		ca.id as id,

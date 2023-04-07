@@ -15,6 +15,13 @@
           <div class="card-content">
             <Priceui :price="course.price" />
             <p>Создан <Dateui :date="course.addDate" /></p>
+            <p>
+              <em
+                >({{
+                  `${course.secondName} ${course.firstName} ${course.thirdName}`
+                }})</em
+              >
+            </p>
           </div>
           <div class="card-action actions">
             <router-link :to="`/courses/${course.id}`" target="_blank"

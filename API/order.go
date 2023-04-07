@@ -12,8 +12,18 @@ import (
 
 func AddToOrderController(db *sqlx.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
-		userID := ctx.Query("userId")
-		order := models.DataForOrder{UserID: userID}
+		token, _ := ctx.Cookie("user_token")
+		order := models.DataForOrder{Token: token}
+
+		if err := ctx.ShouldBindJSON(&order); err != nil {
+			fmt.Println(err.Error())
+
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"successfully": false,
+				"error":        err.Error(),
+			})
+			return
+		}
 
 		if status, err := order.AddToOrder(db); err != nil {
 			fmt.Println(err.Error())
@@ -33,8 +43,8 @@ func AddToOrderController(db *sqlx.DB) gin.HandlerFunc {
 
 func GetUserOrdersControllers(db *sqlx.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
-		userID := ctx.Query("userId")
-		order := models.DataForOrder{UserID: userID}
+		token, _ := ctx.Cookie("user_token")
+		order := models.DataForOrder{Token: token}
 
 		response, status, err := order.GetUserOrders(db)
 		if err != nil {

@@ -33,7 +33,7 @@
           class="validate"
           required
           min="1"
-          @input="(editedData.price = $event.target.value), validInputs()"
+          @input="(editedData.price = +$event.target.value), validInputs()"
           :value="editedData.price"
         />
         <label :class="{ active: course.price }" for="price">Цена курса</label>
@@ -94,13 +94,13 @@ export default {
       course: {
         id: "",
         title: "",
-        price: "",
+        price: 0,
         banner: "",
       },
       editedData: {
         id: "",
         title: "",
-        price: "",
+        price: 0,
         banner: "",
       },
       indicators: {
@@ -165,15 +165,26 @@ export default {
 
     await User.getCourseById(this.$route.params.id)
       .then((response) => response.json())
-      .then(
-        (response) =>
-          ([ref.course, ref.editedData] = [
-            { ...response.data },
-            { ...response.data },
-          ])
-      );
+      .then((response) => {
+        [
+          "userId",
+          "id",
+          "addDate",
+          "editDate",
+          "firstName",
+          "secondName",
+          "thirdName",
+        ].forEach((key) => {
+          delete response.data[key];
+        });
+
+        [ref.course, ref.editedData] = [
+          { ...response.data },
+          { ...response.data },
+        ];
+      });
   },
-  compute: {
+  computed: {
     ...mapGetters(["XCSRFToken"]),
   },
 };

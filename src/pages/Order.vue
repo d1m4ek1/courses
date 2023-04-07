@@ -9,8 +9,13 @@
               Заказ
               <small>№{{ order._id }}</small>
             </span>
-            <!-- <p class="date">{{ order.date }}</p> -->
-            <p><em>name: Test</em> (email: test@test.com)</p>
+            <Dateui :date="order.addDateOrder" />
+            <p>
+              <em>{{
+                `${order.secondName} ${order.firstName} ${order.thirdName}`
+              }}</em>
+              (email: {{ order.email }})
+            </p>
 
             <ol
               v-for="(item, idxx) in order.items"
@@ -20,7 +25,9 @@
                 <a :href="`/courses/${item.courseId}`" target="_blank">{{
                   item.title
                 }}</a>
-                (x<strong>{{ item.count }}</strong
+                (<Priceui :price="item.price" /> x<strong>{{
+                  order.count[idxx]
+                }}</strong
                 >)
               </li>
             </ol>
@@ -46,6 +53,8 @@
 <script>
 import Order from "@/models/order";
 import Priceui from "@/components/Price.vue";
+import Dateui from "@/components/Date.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "OrderVue",
@@ -56,8 +65,8 @@ export default {
   },
   methods: {
     totalPrice(arr) {
-      return arr.items.reduce((total, product) => {
-        return (total += product.price * product.count);
+      return arr.items.reduce((total, product, index) => {
+        return (total += product.price * arr.count[index]);
       }, 0);
     },
     async deleteOrder(orderId) {
@@ -73,10 +82,20 @@ export default {
   async created() {
     await Order.GetOrders()
       .then((response) => response.json())
-      .then((response) => (this.orders = response.data));
+      .then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+          const course = response.data[i];
+          course.count = course.count.reverse();
+        }
+        this.orders = response.data;
+      });
   },
   components: {
     Priceui,
+    Dateui,
+  },
+  computed: {
+    ...mapGetters(["XCSRFToken"]),
   },
 };
 </script>

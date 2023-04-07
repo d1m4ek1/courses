@@ -15,6 +15,8 @@ func BuyCourseController(db *sqlx.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
 		var data models.ProductData
 
+		data.Token, _ = ctx.Cookie("user_token")
+
 		if err := json.NewDecoder(ctx.Request.Body).Decode(&data); err != nil {
 			fmt.Println(err.Error())
 			ctx.JSON(http.StatusUnprocessableEntity, gin.H{
@@ -52,7 +54,9 @@ func AddCourseController(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		if status, err := data.AddCourse(db); err != nil {
+		token, _ := ctx.Cookie("user_token")
+
+		if status, err := data.AddCourse(db, token); err != nil {
 			fmt.Println(err.Error())
 			ctx.JSON(status, gin.H{
 				"successfully": false,

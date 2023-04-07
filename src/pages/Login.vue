@@ -13,9 +13,7 @@
           </ul>
         </div>
         <div id="login" class="col s6 offset-s3">
-          <!-- {{#if loginError}}
-          <p class="alert">{{ loginError }}</p>
-          {{/if}} -->
+          <p class="alert" v-if="errorSystem.isError">{{ errorSystem.msg }}</p>
           <p class="alert" v-if="errorAuth">Не верный логин или пароль</p>
           <h4>Войти в магазин</h4>
           <form action="/login" method="POST">
@@ -53,9 +51,8 @@
           </form>
         </div>
         <div id="register" class="col s6 offset-s3">
-          <!-- {{#if registerError}}
-          <p class="alert">{{ registerError }}</p>
-          {{/if}} -->
+          <p class="alert" v-if="errorSystem.isError">{{ errorSystem.msg }}</p>
+          <p class="alert" v-if="errorAuth">Аккаунт уже существует</p>
           <h4>Создать аккаунт</h4>
           <form action="/register" method="POST">
             <div class="input-field">
@@ -169,6 +166,10 @@ export default {
         thirdName: "",
       },
       errorAuth: false,
+      errorSystem: {
+        msg: "",
+        isError: false,
+      },
     };
   },
   methods: {
@@ -179,6 +180,8 @@ export default {
         .then((response) => response.json())
         .then((response) => {
           if (response.successfully) {
+            this.errorSystem.isError = false;
+
             if (response.isLogin) {
               this.userLogin();
               this.errorAuth = false;
@@ -186,6 +189,9 @@ export default {
             } else {
               this.errorAuth = true;
             }
+          } else {
+            this.errorSystem.msg = response.error;
+            this.errorSystem.isError = true;
           }
         });
     },
@@ -196,6 +202,8 @@ export default {
         .then((response) => response.json())
         .then((response) => {
           if (response.successfully) {
+            this.errorSystem.isError = false;
+
             if (response.isLogin) {
               this.userLogin();
               this.errorAuth = false;
@@ -203,6 +211,9 @@ export default {
             } else {
               this.errorAuth = true;
             }
+          } else {
+            this.errorSystem.msg = response.error;
+            this.errorSystem.isError = true;
           }
         });
     },

@@ -1,8 +1,6 @@
-import Auth from "./auth";
-
 class Cart {
   static async getAllProducts() {
-    return await fetch(`/api/cart/all?userId=${Auth.getPersonID}`, {
+    return await fetch(`/api/cart/all`, {
       method: "GET",
     });
   }
