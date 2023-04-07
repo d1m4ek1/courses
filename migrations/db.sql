@@ -1,3 +1,13 @@
+create table users (
+  id serial PRIMARY KEY,
+  password text NOT NULL,
+  email text NOT NULL,
+  first_name varchar(64) NOT NULL,
+  second_name varchar(64) DEFAULT '',
+  first_name varchar(64) DEFAULT '',
+  token varchar(256) NOT NULL
+)
+
 create table courses (
   id serial PRIMARY KEY,
   title varchar(256) NOT NULL,

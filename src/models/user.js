@@ -1,9 +1,5 @@
-import Auth from "./auth";
-
 class User {
   static async addCourse(data) {
-    const personId = Auth.setNewPersonID();
-    data.userId = personId;
     data.addDate = Date();
 
     return await fetch("/api/course/add", {

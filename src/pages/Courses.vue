@@ -20,12 +20,14 @@
             <router-link :to="`/courses/${course.id}`" target="_blank"
               >Открыть курс</router-link
             >
-            <router-link :to="`/courses/${course.id}/edit`"
-              >Редактировать</router-link
-            >
-            <button @click="addToCart(course.id)" class="btn btn-primary">
-              Купить
-            </button>
+            <template v-if="userAuth">
+              <router-link :to="`/courses/${course.id}/edit`"
+                >Редактировать</router-link
+              >
+              <button @click="addToCart(course.id)" class="btn btn-primary">
+                Купить
+              </button>
+            </template>
           </div>
         </div>
       </div>
@@ -38,6 +40,7 @@ import User from "../models/user";
 import Auth from "@/models/auth";
 import Priceui from "@/components/Price.vue";
 import Dateui from "@/components/Date.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "CoursesVue",
@@ -69,6 +72,9 @@ export default {
   components: {
     Priceui,
     Dateui,
+  },
+  computed: {
+    ...mapGetters(["userAuth"]),
   },
 };
 </script>

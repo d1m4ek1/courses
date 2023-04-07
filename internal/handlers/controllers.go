@@ -61,3 +61,19 @@ func (s *Server) previewCourse() gin.HandlerFunc {
 		})
 	})
 }
+
+func (s *Server) login() gin.HandlerFunc {
+	return gin.HandlerFunc(func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "Войти в аккаунт",
+		})
+	})
+}
+
+func (s *Server) register() gin.HandlerFunc {
+	return gin.HandlerFunc(func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "Создать аккаунт",
+		})
+	})
+}

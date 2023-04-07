@@ -1,33 +1,34 @@
-function generatePersonID() {
-  var pass = "";
-  var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-=";
-
-  for (let i = 1; i <= 128; i++) {
-    var char = Math.floor(Math.random() * str.length + 1);
-
-    pass += str.charAt(char);
-  }
-
-  return pass;
-}
-
 class Auth {
-  static setNewPersonID() {
-    if (!localStorage.getItem("person_id")) {
-      const personId = generatePersonID();
-      localStorage.setItem("person_id", personId);
-      return personId;
-    } else {
-      return localStorage.getItem("person_id");
-    }
+  static async Login(data) {
+    return await fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "text/json",
+      },
+    });
   }
 
-  static get getAnswerAllow() {
-    return localStorage.getItem("person_id") ? true : false;
+  static async Register(data) {
+    return await fetch("/api/auth/register", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "text/json",
+      },
+    });
   }
 
-  static get getPersonID() {
-    return localStorage.getItem("person_id");
+  static async Logout() {
+    return await fetch("/api/auth/logout", {
+      method: "POST",
+    });
+  }
+
+  static async CheckUserAuth() {
+    return await fetch("/api/auth/check", {
+      method: "GET",
+    });
   }
 }
 

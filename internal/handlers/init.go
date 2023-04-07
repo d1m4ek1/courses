@@ -4,6 +4,8 @@ import (
 	"html/template"
 	"strings"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/postgres"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 )
@@ -27,6 +29,8 @@ type controllers interface {
 	order() gin.HandlerFunc
 	cart() gin.HandlerFunc
 	addOrder() gin.HandlerFunc
+	login() gin.HandlerFunc
+	register() gin.HandlerFunc
 }
 
 type Server struct {
@@ -39,10 +43,17 @@ func (s *Server) InitServer(db *sqlx.DB) error {
 		"upper": strings.ToUpper,
 	})
 
+	store, err := postgres.NewStore(db.DB, []byte("secret"))
+	if err != nil {
+		return err
+	}
+
 	go s.updateTemplates()
 
 	s.Router.Static("/assets/js", "./dist/assets/js")
 	s.Router.Static("/assets/css", "./dist/assets/css")
+
+	s.Router.Use(sessions.Sessions("myssesion", store))
 
 	s.Router.Use(gin.Logger())
 	s.Router.Use(gin.Recovery())

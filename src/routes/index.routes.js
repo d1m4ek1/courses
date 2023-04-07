@@ -2,6 +2,9 @@ import { createWebHistory, createRouter } from "vue-router";
 
 const routes = [];
 
+import Login from "./auth.router";
+routes.push(...Login);
+
 import Home from "./home.router";
 routes.push(...Home);
 
