@@ -7,9 +7,12 @@ class Cart {
     });
   }
 
-  static async deleteFromCart(id) {
+  static async deleteFromCart(xcsrf, id) {
     return await fetch(`/api/cart/delete?id=${id}`, {
       method: "DELETE",
+      headers: {
+        "X-CSRF-TOKEN": xcsrf,
+      },
     });
   }
 }

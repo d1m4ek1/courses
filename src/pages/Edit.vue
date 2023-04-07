@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import User from "../models/user";
 
 export default {
@@ -132,7 +133,11 @@ export default {
       if (this.validInputs()) {
         const ref = this;
         this.indicators.isEditedData = 1;
-        await User.editCourse(this.$route.params.id, this.editedData)
+        await User.editCourse(
+          this.XCSRFToken,
+          this.$route.params.id,
+          this.editedData
+        )
           .then((response) => response.json())
           .then((response) => (ref.indicators = { ...response }));
 
@@ -146,7 +151,7 @@ export default {
     async deleteCourse(e) {
       e.preventDefault();
 
-      User.deleteCourse(this.$route.params.id)
+      User.deleteCourse(this.XCSRFToken, this.$route.params.id)
         .then((response) => response.json())
         .then((response) => {
           if (response.successfully) {
@@ -167,6 +172,9 @@ export default {
             { ...response.data },
           ])
       );
+  },
+  compute: {
+    ...mapGetters(["XCSRFToken"]),
   },
 };
 </script>

@@ -14,15 +14,20 @@ export default {
     Navbar,
   },
   methods: {
-    ...mapMutations(["userLogin", "userLogout"]),
+    ...mapMutations(["userLogin", "userLogout", "setCSRFToken"]),
   },
   async created() {
     await Auth.CheckUserAuth()
-      .then((response) => response.json())
+      .then((response) => {
+        this.setCSRFToken(response.headers.get("X-CSRF-TOKEN"));
+
+        return response.json();
+      })
       .then((response) => {
         if (response.successfully) {
-          if (response.isAuth) this.userLogin();
-          else this.userLogout();
+          if (response.isAuth) {
+            this.userLogin();
+          } else this.userLogout();
         }
       });
   },

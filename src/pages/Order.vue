@@ -61,7 +61,7 @@ export default {
       }, 0);
     },
     async deleteOrder(orderId) {
-      await Order.DeleteOrder(orderId)
+      await Order.DeleteOrder(this.XCSRFToken, orderId)
         .then((response) => response.json())
         .then((response) => {
           if (response.successfully) {

@@ -13,12 +13,15 @@ type User interface {
 }
 
 type CourseData struct {
-	Id      int64  `json:"id" db:"id"`
-	Title   string `json:"title" db:"title"`
-	Price   int    `json:"price" db:"price"`
-	Banner  string `json:"banner" db:"banner"`
-	UserID  string `json:"userId" db:"user_id"`
-	AddDate string `json:"addDate" db:"add_date"`
+	Id         int64  `json:"id" db:"id"`
+	Title      string `json:"title" db:"title"`
+	Price      int    `json:"price" db:"price"`
+	Banner     string `json:"banner" db:"banner"`
+	UserID     string `json:"userId" db:"user_id"`
+	AddDate    string `json:"addDate" db:"add_date"`
+	FirstName  string `json:"firstName" db:"first_name"`
+	SecondName string `json:"secondName" db:"second_name"`
+	ThirdName  string `json:"thirdName" db:"third_name"`
 }
 
 func (c *CourseData) AddCourse(db *sqlx.DB) (int, error) {

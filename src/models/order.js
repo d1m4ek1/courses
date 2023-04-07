@@ -1,9 +1,12 @@
 import Auth from "./auth";
 
 class Order {
-  static async AddToOrder() {
+  static async AddToOrder(xcsrf) {
     return await fetch(`/api/order/add?userId=${Auth.getPersonID}`, {
       method: "POST",
+      headers: {
+        "X-CSRF-TOKEN": xcsrf,
+      },
     });
   }
 
@@ -13,9 +16,12 @@ class Order {
     });
   }
 
-  static async DeleteOrder(orderId) {
+  static async DeleteOrder(xcsrf, orderId) {
     return await fetch(`/api/order/delete?orderId=${orderId}`, {
       method: "DELETE",
+      headers: {
+        "X-CSRF-TOKEN": xcsrf,
+      },
     });
   }
 }

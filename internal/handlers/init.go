@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"courses/middlewares"
 	"html/template"
 	"strings"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/gin-contrib/sessions/postgres"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
+	csrf "github.com/utrack/gin-csrf"
 )
 
 type InitServer interface {
@@ -54,6 +56,8 @@ func (s *Server) InitServer(db *sqlx.DB) error {
 	s.Router.Static("/assets/css", "./dist/assets/css")
 
 	s.Router.Use(sessions.Sessions("myssesion", store))
+
+	s.Router.Use(csrf.Middleware(middlewares.CreateConfigCSRFDefenderMiddleware()))
 
 	s.Router.Use(gin.Logger())
 	s.Router.Use(gin.Recovery())

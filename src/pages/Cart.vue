@@ -45,6 +45,7 @@
 import Priceui from "@/components/Price.vue";
 import Cart from "@/models/cart";
 import Order from "@/models/order";
+import { mapGetters } from "vuex";
 
 export default {
   components: { Priceui },
@@ -56,7 +57,7 @@ export default {
   },
   methods: {
     async deleteFromCart(id) {
-      await Cart.deleteFromCart(id)
+      await Cart.deleteFromCart(this.XCSRFToken, id)
         .then((response) => response.json())
         .then((response) => {
           if (response.successfully) {
@@ -67,7 +68,7 @@ export default {
         });
     },
     async addToOrder() {
-      await Order.AddToOrder()
+      await Order.AddToOrder(this.XCSRFToken)
         .then((response) => response.json())
         .then((response) => {
           if (response.successfully) {
@@ -90,6 +91,7 @@ export default {
         return (total += product.price * product.count);
       }, 0);
     },
+    ...mapGetters(["XCSRFToken"]),
   },
 };
 </script>

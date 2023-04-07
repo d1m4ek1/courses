@@ -150,7 +150,7 @@
 
 <script>
 import Auth from "@/models/auth";
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "LoginVue",
@@ -175,7 +175,7 @@ export default {
     async login(e) {
       e.preventDefault();
 
-      await Auth.Login(this.loginData)
+      await Auth.Login(this.XCSRFToken, this.loginData)
         .then((response) => response.json())
         .then((response) => {
           if (response.successfully) {
@@ -192,7 +192,7 @@ export default {
     async register(e) {
       e.preventDefault();
 
-      await Auth.Register(this.registerData)
+      await Auth.Register(this.XCSRFToken, this.registerData)
         .then((response) => response.json())
         .then((response) => {
           if (response.successfully) {
@@ -211,6 +211,9 @@ export default {
   mounted() {
     // eslint-disable-next-line
     M.Tabs.init(document.querySelectorAll(".tabs"));
+  },
+  computed: {
+    ...mapGetters(["XCSRFToken"]),
   },
 };
 </script>

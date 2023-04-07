@@ -9,6 +9,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
+	csrf "github.com/utrack/gin-csrf"
 )
 
 type Login struct {
@@ -183,6 +184,8 @@ func LogoutFromAccount(db *sqlx.DB) gin.HandlerFunc {
 func CheckUserAuth(db *sqlx.DB) gin.HandlerFunc {
 	return gin.HandlerFunc(func(ctx *gin.Context) {
 		session := sessions.Default(ctx)
+
+		ctx.Header("X-CSRF-TOKEN", csrf.GetToken(ctx))
 
 		if session.Get("token") == nil {
 			ctx.JSON(http.StatusOK, gin.H{

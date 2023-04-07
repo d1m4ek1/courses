@@ -56,7 +56,7 @@ export default {
         userId: Auth.getPersonID,
       };
 
-      await User.AddCourseToCart(data)
+      await User.AddCourseToCart(this.XCSRFToken, data)
         .then((response) => response.json())
         .then((response) => {
           if (response.successfully) this.$router.push("/cart");
@@ -74,7 +74,7 @@ export default {
     Dateui,
   },
   computed: {
-    ...mapGetters(["userAuth"]),
+    ...mapGetters(["userAuth", "XCSRFToken"]),
   },
 };
 </script>

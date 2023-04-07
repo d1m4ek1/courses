@@ -72,7 +72,7 @@ export default {
       return Auth.getAnswerAllow;
     },
     async logout() {
-      await Auth.Logout()
+      await Auth.Logout(this.XCSRFToken)
         .then((response) => response.json())
         .then((response) => {
           if (response.successfully) {
@@ -84,7 +84,7 @@ export default {
     ...mapMutations(["userLogout"]),
   },
   computed: {
-    ...mapGetters(["userAuth"]),
+    ...mapGetters(["userAuth", "XCSRFToken"]),
   },
 };
 </script>

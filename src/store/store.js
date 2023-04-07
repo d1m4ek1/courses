@@ -5,6 +5,7 @@ const store = createStore({
   state() {
     return {
       isAuth: false,
+      X_CSRF_TOKEN: "",
     };
   },
   mutations: {
@@ -14,10 +15,16 @@ const store = createStore({
     userLogout(state) {
       state.isAuth = false;
     },
+    setCSRFToken(state, token) {
+      state.X_CSRF_TOKEN = token;
+    },
   },
   getters: {
     userAuth(state) {
       return state.isAuth;
+    },
+    XCSRFToken(state) {
+      return state.X_CSRF_TOKEN;
     },
   },
 });

@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import User from "../models/user";
 
 export default {
@@ -111,7 +112,7 @@ export default {
 
       this.indicators.isEditedData = 1;
 
-      await User.addCourse(this.courseData)
+      await User.addCourse(this.XCSRFToken, this.courseData)
         .then((response) => response.json())
         .then((response) => (this.indicators = { ...response }));
 
@@ -121,6 +122,9 @@ export default {
         this.indicators.isEditedData = 0;
       }, 2000);
     },
+  },
+  computed: {
+    ...mapGetters(["XCSRFToken"]),
   },
 };
 </script>
